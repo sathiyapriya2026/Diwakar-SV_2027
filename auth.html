@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Nexus Library</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        body {
+            background-color: #f8fafc; /* Very light slate */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-hover);
+            display: flex;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        /* Left Side: Branding/Image container */
+        .auth-brand {
+            width: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 4rem 3rem;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .auth-brand::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .auth-brand::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            top: 50px;
+            left: -50px;
+        }
+
+        .brand-text h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            position: relative;
+            z-index: 10;
+        }
+
+        .brand-text p {
+            color: var(--primary-light);
+            font-size: 1.125rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Right Side: Form container */
+        .auth-form-wrapper {
+            width: 50%;
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .auth-header h3 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: var(--text-muted);
+        }
+
+        /* Toggle tabs for Login/Signup (Visual) */
+        .auth-tabs {
+            display: flex;
+            background: var(--bg-main);
+            padding: 0.25rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            transition: all var(--transition-fast);
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--text-main);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .google-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: background var(--transition-fast);
+        }
+
+        .google-btn:hover {
+            background: #f9fafb;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+            }
+            .auth-brand {
+                width: 100%;
+                padding: 3rem 2rem;
+                min-height: 250px;
+            }
+            .auth-form-wrapper {
+                width: 100%;
+                padding: 3rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <!-- Brand Side -->
+        <div class="auth-brand">
+            <a href="index.html" class="logo" style="color: white; z-index: 10;">
+                <i class="ri-book-read-fill"></i> Nexus
+            </a>
+            
+            <div class="brand-text">
+                <h2>Manage your library with intelligence.</h2>
+                <p>Join thousands of institutions that trust Nexus to simplify their library operations.</p>
+            </div>
+            
+            <div style="z-index: 10;">
+                <p style="font-size: 0.875rem; opacity: 0.8;">&copy; 2026 Nexus Systems</p>
+            </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="auth-form-wrapper">
+            <div class="auth-header">
+                <h3>Welcome back</h3>
+                <p>Please enter your details to sign in.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <div class="tab active">Sign In</div>
+                <div class="tab">Sign Up</div>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email or Member ID</label>
+                    <input type="text" id="email" class="form-input" placeholder="admin@nexus.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between;">
+                        <label class="form-label" for="password">Password</label>
+                        <a href="#" style="font-size: 0.75rem; color: var(--primary); font-weight: 500;">Forgot password?</a>
+                    </div>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <div style="display: flex; align-items: center; margin-bottom: 1.5rem; gap: 0.5rem;">
+                    <input type="checkbox" id="remember" style="accent-color: var(--primary);">
+                    <label for="remember" style="font-size: 0.875rem; color: var(--text-muted); cursor: pointer;">Remember me for 30 days</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary submit-btn">Sign In</button>
+
+                <div class="divider">or</div>
+
+                <button type="button" class="google-btn">
+                    <img src="https://img.icons8.com/color/24/000000/google-logo.png" alt="Google" style="width: 20px;">
+                    Sign in with Google
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

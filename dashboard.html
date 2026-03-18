@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Nexus Library</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Dashboard Layout */
+        body {
+            background-color: var(--bg-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: white;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 40;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-menu {
+            padding: 1.5rem 1rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #94a3b8;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            padding: 0 0.5rem;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.625rem 0.75rem;
+            color: var(--text-muted);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+
+        .menu-item i {
+            font-size: 1.25rem;
+        }
+
+        .menu-item:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .menu-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Navbar */
+        .topbar {
+            height: 4rem;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            width: 300px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            margin-left: 0.5rem;
+            outline: none;
+            font-size: 0.875rem;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .icon-btn {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .icon-btn:hover { color: var(--text-main); }
+
+        .icon-btn .badge-dot {
+            position: absolute;
+            top: 0;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Dashboard Body */
+        .dashboard-body {
+            padding: 2rem;
+        }
+
+        /* Stat Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .stat-info p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-info h3 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .stat-info .trend {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .trend.up { color: var(--secondary); }
+        .trend.down { color: var(--danger); }
+
+        .stat-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .icon-blue { background: #e0e7ff; color: #4f46e5; }
+        .icon-green { background: #d1fae5; color: #059669; }
+        .icon-yellow { background: #fef3c7; color: #d97706; }
+        .icon-red { background: #fee2e2; color: #dc2626; }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+            color: var(--text-main);
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .book-cell {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .book-img {
+            width: 40px;
+            height: 56px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .member-info p {
+            font-weight: 500;
+            color: var(--text-main);
+        }
+        
+        .member-info span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Mobile Adjustments */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .search-bar { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">
+                <i class="ri-book-read-fill"></i> Nexus
+            </a>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-label">Main Menu</div>
+            <a href="dashboard.html" class="menu-item active">
+                <i class="ri-dashboard-line"></i> Dashboard
+            </a>
+            <a href="books.html" class="menu-item">
+                <i class="ri-book-2-line"></i> Catalog
+            </a>
+            <a href="#" class="menu-item">
+                <i class="ri-group-line"></i> Members
+            </a>
+            <a href="#" class="menu-item">
+                <i class="ri-arrow-left-right-line"></i> Circulation
+            </a>
+            
+            <div class="menu-label" style="margin-top: 2rem;">Preferences</div>
+            <a href="#" class="menu-item">
+                <i class="ri-settings-4-line"></i> Settings
+            </a>
+            <a href="index.html" class="menu-item" style="margin-top: auto;">
+                <i class="ri-logout-box-r-line"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <i class="ri-menu-2-line menu-toggle" id="menu-btn"></i>
+                <h2 style="font-size: 1.25rem; font-weight: 600;">Overview</h2>
+            </div>
+            
+            <div class="search-bar">
+                <i class="ri-search-line" style="color: var(--text-muted);"></i>
+                <input type="text" placeholder="Search books, members, IDs...">
+            </div>
+
+            <div class="user-menu">
+                <button class="icon-btn">
+                    <i class="ri-notification-3-line"></i>
+                    <span class="badge-dot"></span>
+                </button>
+                <div class="avatar">AD</div>
+            </div>
+        </header>
+
+        <!-- Dashboard Body -->
+        <div class="dashboard-body">
+            
+            <div class="page-header" style="padding-top: 0;">
+                <h1 class="page-title">Welcome back, Admin 👋</h1>
+                <p class="page-subtitle">Here is what's happening in your library today.</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <p>Total Books</p>
+                        <h3>12,483</h3>
+                        <div class="trend up"><i class="ri-arrow-up-line"></i> 2.4% from last month</div>
+                    </div>
+                    <div class="stat-icon icon-blue"><i class="ri-book-3-fill"></i></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <p>Active Members</p>
+                        <h3>2,845</h3>
+                        <div class="trend up"><i class="ri-arrow-up-line"></i> 12 new this week</div>
+                    </div>
+                    <div class="stat-icon icon-green"><i class="ri-group-fill"></i></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <p>Books Issued (Current)</p>
+                        <h3>942</h3>
+                        <div class="trend down"><i class="ri-arrow-down-line"></i> 4% from last week</div>
+                    </div>
+                    <div class="stat-icon icon-yellow"><i class="ri-arrow-left-right-fill"></i></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <p>Overdue Books</p>
+                        <h3>38</h3>
+                        <div class="trend down" style="color: var(--danger);"><i class="ri-alert-fill"></i> Requires action</div>
+                    </div>
+                    <div class="stat-icon icon-red"><i class="ri-timer-flash-fill"></i></div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h4>Recent Transactions</h4>
+                    <button class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.75rem;">View All</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Book Details</th>
+                                <th>Member</th>
+                                <th>Issue Date</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="book-cell">
+                                        <!-- Placeholder colored box for cover -->
+                                        <div class="book-img" style="background: linear-gradient(to bottom right, #34d399, #059669);"></div>
+                                        <div>
+                                            <p style="font-weight: 500; color: var(--text-main);">The Great Gatsby</p>
+                                            <p style="font-size: 0.75rem; color: var(--text-muted);">#B-9201</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="member-info">
+                                        <p>Sarah Jenkins</p>
+                                        <span>ID: STD-2023-04</span>
+                                    </div>
+                                </td>
+                                <td>Oct 12, 2026</td>
+                                <td>Oct 26, 2026</td>
+                                <td><span class="badge badge-success">Issued</span></td>
+                                <td>
+                                    <button class="btn btn-ghost" style="padding: 0.4rem;"><i class="ri-more-2-fill"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="book-cell">
+                                        <div class="book-img" style="background: linear-gradient(to bottom right, #60a5fa, #2563eb);"></div>
+                                        <div>
+                                            <p style="font-weight: 500; color: var(--text-main);">Introduction to Algorithms</p>
+                                            <p style="font-size: 0.75rem; color: var(--text-muted);">#B-4412</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="member-info">
+                                        <p>Michael Chang</p>
+                                        <span>ID: FAC-2019-11</span>
+                                    </div>
+                                </td>
+                                <td>Sep 28, 2026</td>
+                                <td>Oct 12, 2026</td>
+                                <td><span class="badge badge-danger">Overdue</span></td>
+                                <td>
+                                    <button class="btn btn-ghost" style="padding: 0.4rem;"><i class="ri-more-2-fill"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="book-cell">
+                                        <div class="book-img" style="background: linear-gradient(to bottom right, #fbbf24, #d97706);"></div>
+                                        <div>
+                                            <p style="font-weight: 500; color: var(--text-main);">Sapiens: A Brief History</p>
+                                            <p style="font-size: 0.75rem; color: var(--text-muted);">#B-8839</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="member-info">
+                                        <p>Emma Wilson</p>
+                                        <span>ID: STD-2024-89</span>
+                                    </div>
+                                </td>
+                                <td>Oct 14, 2026</td>
+                                <td>--</td>
+                                <td><span class="badge" style="background: #e2e8f0; color: #475569;">Returned</span></td>
+                                <td>
+                                    <button class="btn btn-ghost" style="padding: 0.4rem;"><i class="ri-more-2-fill"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Specific sidebar toggle logic
+        document.getElementById('menu-btn').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
