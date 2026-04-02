@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Online Quiz System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="login-box">
+<h2>Online Quiz</h2>
+
+<input type="text" id="name" placeholder="Enter your name">
+
+<button onclick="startQuiz()">Start Quiz</button>
+
+<br><br>
+
+<a href="admin.html">Admin Panel</a>
+
+</div>
+
+<script>
+function startQuiz(){
+let name=document.getElementById("name").value;
+
+if(name==""){
+alert("Enter your name");
+}
+else{
+localStorage.setItem("username",name);
+window.location="quiz.html";
+}
+}
+</script>
+
+</body>
+</html>
