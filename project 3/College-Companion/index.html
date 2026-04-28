@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College Companion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>College Companion</h1>
+
+<div class="container">
+
+    <!-- Notes -->
+    <div class="card">
+        <h2>Notes</h2>
+        <input type="text" id="noteInput" placeholder="Enter note">
+        <button onclick="addNote()">Add</button>
+        <ul id="notesList"></ul>
+    </div>
+
+    <!-- Timetable -->
+    <div class="card">
+        <h2>Timetable</h2>
+        <input type="text" id="timeInput" placeholder="Enter schedule">
+        <button onclick="addTime()">Add</button>
+        <ul id="timeList"></ul>
+    </div>
+
+    <!-- Events -->
+    <div class="card">
+        <h2>Events</h2>
+        <input type="text" id="eventInput" placeholder="Enter event">
+        <button onclick="addEvent()">Add</button>
+        <ul id="eventList"></ul>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
